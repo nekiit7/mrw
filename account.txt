@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аккаунт - MIRWANA.RU</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0d0d0d, #3e0000, #1a1a1a);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #800000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            background-color: #660000;
+        }
+
+        .header {
+            margin-top: 50px;
+        }
+
+        .nickname {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .account-container {
+            width: 80%;
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        .account-box, .files-box {
+            background-color: #7a0000;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+        }
+
+        .account-box .button {
+            background-color: #800000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .account-box .button:hover {
+            background-color: #660000;
+        }
+
+        .file-link {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-to-home">На главную</a>
+
+    <div class="header">
+        <div class="nickname">Привет, {{ username }}!</div>
+        <div>Дата регистрации: {{ registration_date }}</div>
+    </div>
+
+    <div class="account-container">
+        <!-- Аккаунт -->
+        <div class="account-box">
+            <p>Никнейм: {{ username }}</p>
+            <a href="/change-nickname" class="button">Сменить ник</a>
+        </div>
+
+        <!-- Загруженные файлы -->
+        <div class="files-box">
+            <h3>Загруженные файлы:</h3>
+            {% for file in files %}
+                <a href="{{ file.url }}" class="file-link" target="_blank">{{ file.filename }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>ТГ-канал с записями фильмов и интересных моментов: <a href="https://t.me/your_channel" target="_blank">*ссылка на тг канал*</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фильмы - MIRWANA.RU</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0d0d0d, #3e0000, #1a1a1a);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #800000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            background-color: #660000;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-top: 50px;
+        }
+
+        .movies-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Создание сетки */
+            gap: 25px; /* Промежуток между блоками */
+            margin-top: 20px;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        .movie-box {
+            width: 100%;
+            padding: 20px;
+            background-color: #7a0000;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .movie-box:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-box img {
+            width: 100%;
+            height: auto;
+    max-height: 200px;
+            object-fit: cover; /* Сжимает изображение, чтобы оно не выходило за рамки прямоугольника */
+            border-radius: 10px;
+        }
+
+        .movie-box .movie-name {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .movie-box .movie-date {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #800000; /* Бордовый фон */
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+        }
+
+        .modal img {
+            width: 60%; /* Устанавливаем изображение на 60% от размера модального окна */
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .modal a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal a:hover {
+            background-color: #660000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка "На главную" -->
+    <a href="/" class="back-to-home">На главную</a>
+
+    <!-- Заголовок -->
+    <h1>Фильмы, которые смотрели</h1>
+
+    <!-- Контейнер с фильмами -->
+    <div class="movies-container">
+        <!-- Фильмы -->
+        <div class="movie-box" onclick="openMovieModal('Фильм 1', '2022-03-15', 'static/images.jpg')">
+            <img src="static/images.jpg" alt="Я - легенда">
+            <div class="movie-name">Я - легенда</div>
+            <div class="movie-date">17 февраля 2025</div>
+        </div>
+        <div class="movie-box" onclick="openMovieModal('Фильм 2', '2022-04-10', 'static/aaa.jpg')">
+            <img src="static/aaa.jpg" alt="Фильм 2">
+            <div class="movie-name">Фильм 2</div>
+            <div class="movie-date">2022-04-10</div>
+        </div>
+        <div class="movie-box" onclick="openMovieModal('Фильм 3', '2022-05-05', 'static/photo3.jpg')">
+            <img src="static/photo3.jpg" alt="Фильм 3">
+            <div class="movie-name">Фильм 3</div>
+            <div class="movie-date">2022-05-05</div>
+        </div>
+        <!-- Добавь другие фильмы -->
+    </div>
+
+    <!-- Модальное окно для выбора платформы -->
+    <div class="modal" id="movie-modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <h2>Где хотите посмотреть фильм?</h2>
+            <img id="modal-img" src="" alt="Фильм в полном размере">
+            <div>
+                <a href="https://t.me/your_channel" target="_blank">Телеграм</a> | 
+                <a href="https://www.kinopoisk.ru" target="_blank">КиноПоиск</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>ТГ-канал с записями фильмов и интересных моментов: <a href="https://t.me/your_channel" target="_blank">*ссылка на тг канал*</a></p>
+    </div>
+
+    <script>
+        // Функция для открытия модального окна с выбором платформы
+        function openMovieModal(movieName, watchDate, imageUrl) {
+            const modal = document.getElementById('movie-modal');
+            modal.querySelector('h2').textContent = `Где хотите посмотреть фильм "${movieName}"?`;
+            modal.querySelector('#modal-img').src = imageUrl; // Подставляем изображение в модальное окно
+            modal.style.display = 'flex';
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal(event) {
+            // Закрыть окно при клике вне модального окна
+            if (event.target === event.currentTarget) {
+                const modal = document.getElementById('movie-modal');
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

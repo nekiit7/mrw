@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIRWANA.RU</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0d0d0d, #3e0000, #1a1a1a);
+background-attachment: fixed;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .upload-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: inline-block;
+            width: 300px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            cursor: pointer;
+            padding: 12px 24px;
+            margin-top: 10px;
+            background-color: #800000;
+            color: white;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        label:hover {
+            background-color: #660000;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .link-container {
+            margin-top: 15px;
+            display: none; /* Скрыта до загрузки */
+        }
+.share-link {
+    color: white; /* Белый текст */
+    background-color: #800000; /
+    border: 2px solid #8B0000; /* Бордовая обводка */
+    padding: 10px 20px; /* Добавляем отступы */
+    border-radius: 5px; /* Закругляем углы */
+    text-decoration: none; /* Убираем подчеркивание */
+    font-weight: bold; /* Делаем текст жирным */
+    transition: all 0.3s ease; /* Плавный эффект */
+display: inline-block; /* Чтобы отступ работал корректно */
+    margin-right: 10px; /* Добавляем отступ справа */
+}
+
+.share-link:hover {
+background-color: #660000; /* Белый фон при наведении */
+    color: white; /* Темнее при наведении */
+}
+
+.copy-button {
+    background-color: #800000;
+    color: white;
+    border: 2px solid #8B0000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none; /* Убираем подчеркивание */
+    font-weight: bold; /* Жирный текст */
+    transition: all 0.3s ease; /* Плавный эффект */
+    display: inline-block; /* Чтобы не было схлопывания */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+.copy-button:hover {
+    background-color: #660000;
+}
+
+        .link-container a {
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .link-container a:hover {
+            text-decoration: none;
+        }
+
+        .preview {
+            margin-top: 15px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: none;
+        }
+
+        #previewVideo {
+            width: 100%;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .navbar a {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+    .shop-button {
+    position: fixed; /* Фиксируем позицию */
+    bottom: 20px; /* Отступ от нижнего края */
+    left: 20px; /* Отступ от левого края */
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.shop-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.icon-button {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+text-decoration: none;
+}
+
+/* Стили для всплывающих подсказок */
+.tooltip {
+    position: absolute;
+    left: 70px; /* Размещаем справа от значка */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px; /* Увеличил размер, как у MIRWANA.RU */
+    font-weight: bold; /* Делаем жирным */
+    font-family: Arial, sans-serif; /* Используем тот же шрифт */
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Показываем подсказку при наведении */
+.icon-button:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.elwan {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7); /* Полупрозрачный белый цвет */
+    font-family: 'Arial', sans-serif;
+    font-weight: normal;
+    background-color: rgba(0, 0, 0, 0.3); /* Полупрозрачный черный фон */
+    padding: 5px 10px;
+    border-radius: 10px;
+z-index: 9999; /* Убедимся, что элемент всегда сверху */
+    transition: opacity 0.3s ease;
+}
+
+.elwan:hover {
+    opacity: 1; /* При наведении сделаем текст более заметным */
+}
+
+/* Стили для модального окна */
+    .modal {
+        display: none; /* Изначально скрыто */
+        position: fixed;
+        z-index: 1; /* Поверх всего контента */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        overflow: auto; /* Разрешаем прокрутку */
+    }
+
+    .modal-content {
+        background-color: rgba(0, 0, 0, 0.8);
+ color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        
+        text-align: center;
+        border-radius: 10px;
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
+a {
+        color: #ffeb3b; /* Желтый цвет для ссылки */
+    }
+
+    a:hover {
+        text-decoration: underline; /* Подчеркивание ссылки при наведении */
+    }
+.logo-image {
+    max-width: 60%;  /* Максимальная ширина изображения */
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+border-radius: 12px;
+}
+
+/* Стили для кнопок */
+        .auth-buttons {
+            position: fixed; /* Фиксируем элементы */
+            top: 20px; /* Отступ от верхнего края */
+            right: 20px; /* Отступ от правого края */
+            z-index: 1000; /* Обеспечивает, чтобы кнопки всегда были поверх контента */
+        }
+
+        .auth-buttons .btn {
+            display: inline-block; /* Для размещения кнопок рядом */
+            margin: 0 10px; /* Отступы между кнопками */
+            padding: 12px 24px; /* Внутренние отступы */
+            background-color: #800000; /* Цвет фона */
+            color: white; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание */
+            border-radius: 8px; /* Скругленные углы */
+            font-size: 16px; /* Размер текста */
+            font-weight: bold; /* Жирный текст */
+            transition: background-color 0.3s ease; 
+ }
+
+        .auth-buttons .btn:hover {
+            background-color: #660000; /* Цвет при наведении */
+        }
+
+    </style>
+</head>
+<body>
+<!-- Модальное окно для страницы "Аккаунт" -->
+<div id="accountModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAccountModal()">&times;</span>
+        <h2>Страница под разработкой</h2>
+        <p>Страница вашего аккаунта в данный момент находится в разработке. Пожалуйста, возвращайтесь позже.</p>
+    </div>
+</div>
+
+<!-- Кнопки "Зарегистрироваться" и "Войти" -->
+<!-- div class="auth-buttons">
+        <a href="/register" class="btn">Зарегистрироваться</a>
+        <a href="/login" class="btn">Войти</a>
+    </div> -->
+
+
+<!-- Навигация -->
+<div class="navbar">
+    <a href="javascript:void(0);" class="icon-button" onclick="openAccountModal()">
+    👤
+    <span class="tooltip">Аккаунт</span>
+</a>
+
+    <a href="{{ url_for('movies') }}" class="icon-button">
+        🎬
+        <span class="tooltip">Фильмы</span>
+    </a>
+</div>
+
+<!-- Кнопка "Информация" над кнопкой "Мерч" -->
+<a href="javascript:void(0);" class="icon-button" onclick="openModal()" style="position: fixed; bottom: 90px; left: 20px;">
+    ℹ️
+    <span class="tooltip">Информация</span>
+</a>
+
+<!-- Кнопка "Мерч" в левом нижнем углу -->
+<a href="https://mrwshop.ru/" class="icon-button" style="position: fixed; bottom: 20px; left: 20px;">
+    👕
+    <span class="tooltip">Мерч</span>
+</a>
+
+<!-- Кнопка "Ссылки" правее кнопки "Мерч" -->
+<a href="{{ url_for('links') }}" class="icon-button" style="position: fixed; bottom: 40px; right: 20px;">
+    🔗
+    <span class="tooltip">Ссылки</span>
+</a>
+
+
+
+
+    <!-- Основной контейнер -->
+    <div class="container">
+        <img src="{{ url_for('static', filename='mirwana.jpg') }}" alt="MIRWANA.RU" class="logo-image ">
+
+
+        <div class="upload-box">
+            <p>Для загрузки нажмите "Выбрать файл" или вставьте файл из буфера обмена</p>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <label for="mediaInput">Выбрать файл</label>
+                <input type="file" id="mediaInput" name="media" accept="image/*, video/*" required>
+            </form>
+            <div class="link-container" id="shareLinkContainer">
+    <a href="#" id="shareLink" class="share-link" target="_blank"></a>
+    <button id="copyButton" class="copy-button">Скопировать</button>
+</div>
+            <div class="preview">
+                <img id="previewImage" src="" alt="Preview">
+                <video id="previewVideo" controls autoplay muted>
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mediaInput = document.getElementById('mediaInput');
+        const previewImage = document.getElementById('previewImage');
+        const previewVideo = document.getElementById('previewVideo');
+        const videoSource = document.getElementById('videoSource');
+        const shareLink = document.getElementById('shareLink');
+        const linkContainer = document.getElementById('shareLinkContainer');
+const copyButton = document.getElementById('copyButton');
+
+        mediaInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                // Отображение превью до загрузки
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                        previewVideo.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video/')) {
+                    const videoURL = URL.createObjectURL(file);
+                    videoSource.src = videoURL;
+                    previewVideo.style.display = 'block';
+                    previewImage.style.display = 'none';
+                    previewVideo.load();
+                }
+
+                // Загружаем файл через fetch
+                const formData = new FormData();
+                formData.append("media", file);
+                fetch('/upload', { method: 'POST', body: formData })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            shareLink.href = data.url;
+                            shareLink.textContent = "Ссылка на файл";
+                            linkContainer.style.display = 'block';
+                        } else {
+                            alert('Ошибка загрузки: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        alert('Произошла ошибка при загрузке файла.');
+                    });
+            }
+        });
+ // Обработчик нажатия на кнопку "Скопировать"
+        copyButton.addEventListener('click', function () {
+            navigator.clipboard.writeText(shareLink.href).then(() => {
+                alert('Ссылка скопирована!');
+            });
+        });
+// Обработчик для вставки изображения из буфера обмена
+document.body.addEventListener('paste', function (event) {
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+
+        // Проверяем, является ли вставленное содержимое изображением
+        if (item.type.indexOf('image') !== -1) {
+            const file = item.getAsFile();
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';  // Показываем превью
+                previewVideo.style.display = 'none';  // Скрываем видео (если оно было)
+// Загружаем файл через fetch, как при обычной загрузке
+                const formData = new FormData();
+                formData.append("media", file);
+
+                // Загрузка на сервер
+                fetch('/upload', { method: 'POST', body: formData })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Ссылка на файл
+                            shareLink.href = data.url;
+                            shareLink.textContent = "Перейти по ссылке";
+                            linkContainer.style.display = 'block';  // Показываем контейнер с ссылкой
+                        } else {
+                            alert('Ошибка загрузки: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        alert('Произошла ошибка при загрузке файла.');
+                    });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+ function openModal() {
+        document.getElementById("myModal").style.display = "flex";
+    }
+
+    // Закрытие модального окна
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    // Закрытие модального окна при клике вне его
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+// Функция для открытия модального окна "Аккаунт"
+function openAccountModal() {
+    document.getElementById("accountModal").style.display = "flex";
+}
+
+// Функция для закрытия модального окна "Аккаунт"
+function closeAccountModal() {
+    document.getElementById("accountModal").style.display = "none";
+}
+
+// Закрытие модального окна при клике вне его
+window.onclick = function(event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+
+    // Закрытие модального окна для "Аккаунт", если клик за пределами
+    var accountModal = document.getElementById("accountModal");
+    if (event.target == accountModal) {
+        accountModal.style.display = "none";
+    }
+}
+
+    </script>
+<div class="elwan">
+    omar Optimus prime ☠️ elwan prime 💀 ✅
+</div>
+<!-- Модальное окно -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Информация о сайте</h2>
+        <p>Это тестовый сайт, замена kappa.lol. Также здесь есть информация о стримах.</p>
+        <p>Если у вас есть идеи и предложения, пишите в <a href="https://t.me/nekiit7" target="_blank" style="color: #ffeb3b;">Telegram</a></p>
+    </div>
+</div>
+
+</body>
+</html>
+
+
